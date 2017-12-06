@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    body {
+        margin: 20px;
+    }
+
+    hr {
+        display: none;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="text" class="form-control" id="txtCountry" name="txtCountry" />
+        @section scripts {
+        <script>
+            $(document).ready(function(){
+                var _countryjson = @Html.Raw(Json.Encode(@Model.Countries));
+                $("#txtCountry").autocomplete({
+                    source: function(req, resp) {
+                        var results = [];
+                        $.each(_countryjson, function(k, v) {
+                            // Make a pass for names
+                            if (v.name.toLowerCase().indexOf(req.term.toLowerCase()) == 0) {
+                                results.push(v.name)
+                                return;
+                            }
+                        });
+                        resp(results);
+                    }
+                });
+
+            });
+        </script>
+            }
+    </div>
+</div>
